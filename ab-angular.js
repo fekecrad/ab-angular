@@ -34,9 +34,14 @@ angular.module('abAngular', ['ngCookies'])
 			
 			$cookies.putObject(storageKey, runningExperiment);
 		}
-		
+
 		if (analyticsHandlingCallback) {
-			analyticsHandlingCallback(selectedExperiment, runningExperiment.variant);
+			
+			var fullExperimentInfo = experimentsDefinitions.filter(function (experiment) {
+				return experiment.name === runningExperiment.name;
+			});
+			
+			analyticsHandlingCallback(fullExperimentInfo[0], runningExperiment.variant);
 		}
 	}
 	

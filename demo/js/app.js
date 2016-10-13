@@ -5,6 +5,10 @@ angular.module('app', ['abAngular'])
 		experimentsDefinitions: [
 			{name: 'favIconTest', displayProbability: 0.5, experimentId: '1'},
 			{name: 'randomTest9', displayProbability: 0.5, experimentId: '2'}
-		]
+		],
+		analyticsHandlingCallback: function (experiment, variant) {
+			console.log(experiment);
+			console.log(variant);
+		}
 	});
 }]);

@@ -2,11 +2,8 @@ angular.module('abAngular', ['ngCookies'])
 .service('abAngularService', ['$cookies', function($cookies) {
 	
 	var runningExperiment = null;
-	var experimentsDefinitions = [
-		{name:'test1', displayProbability: 0.5, id: '1'},
-		{name:'test2', displayProbability: 0.5, id: '2' },
-		{name:'test4', displayProbability: 0.5, id: '3'}
-	];
+	
+	var experimentsDefinitions = [];
 	
 	var storageKey = 'defaultStorageKey';
 	
@@ -19,6 +16,10 @@ angular.module('abAngular', ['ngCookies'])
 	function setStorageKey(key) {
 		storageKey = key;
 		runningExperiment = getExperimentFromStorage();
+	}
+	
+	function setExperimentsDefinitions(definitions) {
+		experimentsDefinitions = definitions;
 	}
 	
 	function initializeExperiment(experimentName) {
@@ -60,7 +61,8 @@ angular.module('abAngular', ['ngCookies'])
 	
 	return {
 		'initializeExperiment': initializeExperiment,
-		'setStorageKey': setStorageKey
+		'setStorageKey': setStorageKey,
+		'setExperimentsDefinitions': setExperimentsDefinitions
 	};
 }])
 .component('experiment', {

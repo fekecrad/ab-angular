@@ -5,9 +5,13 @@ angular.module('abAngular', ['ngCookies'])
 	var experimentsDefinitions = [];
 	var storageKey = 'defaultStorageKey';
 	
+	var analyticsHandlingCallback = null;
+	
 	function initializeService(options) {
 		setExperimentsDefinitions(options.experimentsDefinitions);
 		setStorageKey(options.storageKey);
+		analyticsHandlingCallback = options.analyticsHandlingCallback;
+		
 		runningExperiment = getExperimentFromStorage();
 		
 		if (!experimentsDefinitions.length) {
@@ -31,11 +35,8 @@ angular.module('abAngular', ['ngCookies'])
 			$cookies.putObject(storageKey, runningExperiment);
 		}
 		
-		// ga('set', 'expId', selectedExperiment.id)
-		if (runningExperiment.variant === 'A') {
-			// ga('set', 'expVar', '0')
-		} else {
-			// ga('set', 'expVar', '1')
+		if (analyticsHandlingCallback) {
+			analyticsHandlingCallback(selectedExperiment, runningExperiment.variant);
 		}
 	}
 	

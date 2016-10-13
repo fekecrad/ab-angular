@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>A/B test demo</title>
+</head>
+<body ng-controller="MainCtrl as ctrl">
+	<experiment name="'displayGYGLogoAndNew'">
+		<variant-a>
+			<span>Test 1</span>
+			<span>asdasdasd</span>
+		</variant-a>
+		<variant-b>
+			<span>Test 2</span>
+			<span>xxxxxyyyyyyzzzz</span>
+		</variant-b>
+	</experiment>
+
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
+
+	<script src="../ab-angular.js"></script>
+	<script src="./js/app.js"></script>
+</body>
+</html>

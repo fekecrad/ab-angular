@@ -1,0 +1,22 @@
+{
+	"name": "ab-angular",
+	"version": "0.0.1",
+	"description": "\"A/B test component for Angular\"",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"demo": "http-server ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fekecrad/ab-angular.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/fekecrad/ab-angular/issues"
+	},
+	"homepage": "https://github.com/fekecrad/ab-angular#readme",
+	"devDependencies": {
+		"http-server": "^0.9.0"
+	}
+}

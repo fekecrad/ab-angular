@@ -1,4 +1,10 @@
 angular.module('app', ['abAngular'])
 .controller('MainCtrl', ['abAngularService', function (abAngularService) {
-	abAngularService.setStorageKey('someKey');
+	abAngularService.initializeService({
+		storageKey: 'COOKIE_KEY',
+		experimentsDefinitions: [
+			{name: 'favIconTest', displayProbability: 0.5, experimentId: '1'},
+			{name: 'randomTest9', displayProbability: 0.5, experimentId: '2'}
+		]
+	});
 }]);

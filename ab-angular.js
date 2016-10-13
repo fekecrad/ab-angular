@@ -2,15 +2,58 @@ angular.module('abAngular', ['ngCookies'])
 .service('abAngularService', ['$cookies', function($cookies) {
 	
 	var runningExperiment = null;
-	
 	var experimentsDefinitions = [];
-	
 	var storageKey = 'defaultStorageKey';
 	
-	runningExperiment = getExperimentFromStorage();
+	function initializeService(options) {
+		setExperimentsDefinitions(options.experimentsDefinitions);
+		setStorageKey(options.storageKey);
+		runningExperiment = getExperimentFromStorage();
+		
+		if (!experimentsDefinitions.length) {
+			return;
+		}
+		
+		if (!runningExperiment) {
+			var fairDiceRoll = Math.floor(Math.random() * experimentsDefinitions.length);
+			var selectedExperiment = experimentsDefinitions[fairDiceRoll];
+			
+			var variant = 'A';
+			if (selectedExperiment.displayProbability < Math.random()) {
+				variant = 'B';
+			}
+			
+			runningExperiment = {
+				name: selectedExperiment.name,
+				variant: variant
+			};
+			
+			$cookies.putObject(storageKey, runningExperiment);
+		}
+		
+		// ga('set', 'expId', selectedExperiment.id)
+		if (runningExperiment.variant === 'A') {
+			// ga('set', 'expVar', '0')
+		} else {
+			// ga('set', 'expVar', '1')
+		}
+	}
 	
 	function getExperimentFromStorage() {
-		return experimentFromStorage = $cookies.getObject(storageKey);
+		var experimentFromStorage = $cookies.getObject(storageKey);
+		
+		if (experimentFromStorage) {
+			var exists = experimentsDefinitions.filter(function(experiment) {
+				return experiment.name === experimentFromStorage.name
+			});
+			
+			if(!exists.length) {
+				$cookies.remove(storageKey);
+				experimentFromStorage = null;
+			}
+		}
+		
+		return experimentFromStorage;
 	}
 	
 	function setStorageKey(key) {
@@ -23,46 +66,15 @@ angular.module('abAngular', ['ngCookies'])
 	}
 	
 	function initializeExperiment(experimentName) {
-		if(runningExperiment) {
+		if(runningExperiment && runningExperiment.name === experimentName) {
 			return runningExperiment.variant;
-		} else {
-			return activateExperiment(experimentName);
 		}
-	}
-	
-	function activateExperiment(experimentName) {
-		
-		var selectedExperiment = experimentsDefinitions.filter(function(experiment) {
-			return experiment.name === experimentName;
-		});
-		
-		selectedExperiment = selectedExperiment[0];
-		
-		var variant = 'A';
-		
-		if (selectedExperiment.displayProbability < Math.random()) {
-			variant = 'B';
-		}
-		
-		$cookies.putObject(storageKey, {
-			name: selectedExperiment.name,
-			variant: variant
-		});
-		
-		// ga('set', 'expId', selectedExperiment.id)
-		if (variant === 'A') {
-		// ga('set', 'expVar', '0')
-		} else {
-		// ga('set', 'expVar', '1')
-		}
-		
-		return variant;
+		return null;
 	}
 	
 	return {
 		'initializeExperiment': initializeExperiment,
-		'setStorageKey': setStorageKey,
-		'setExperimentsDefinitions': setExperimentsDefinitions
+		'initializeService': initializeService
 	};
 }])
 .component('experiment', {
